@@ -1,3 +1,6 @@
+### Новый **README.md** для проекта:
+
+---
 
 # **Bonus Task — String Algorithm Analysis**
 
@@ -13,7 +16,7 @@
 
 ## **1. Purpose**
 
-This repository contains the implementation and analysis of the **Knuth-Morris-Pratt (KMP)** string matching algorithm, which is used to efficiently search for occurrences of a pattern within a text. The task is part of the **Bonus Task** for the **Design and Analysis of Algorithms** course. The project focuses on the following areas:
+This repository contains the implementation and analysis of the **Knuth-Morris-Pratt (KMP)** string matching algorithm. The task is part of the **Bonus Task** for the **Design and Analysis of Algorithms** course. The project focuses on:
 
 * **KMP Algorithm** for efficient substring matching.
 * **Time Complexity** analysis of the algorithm with different string lengths and pattern sizes.
@@ -40,24 +43,41 @@ String-Algorithms-KMP/
 │   │   │   └── SearchResult.java
 │   │   ├── exception/
 │   │   │   └── CustomException.java
-│   │   │
 │   │   ├── performance/
 │   │   │   └── PerformanceTest.java
 │   │   ├── util/
 │   │   │   └── StringUtils.java
 │   │   └── Main.java
-└── │
-    └── ...
+└── ...
 ```
+
+### **Explanation**:
+
+* **`README.md`**: Project documentation.
+* **`performance_data.csv`**: Data file with performance metrics.
+* **`results/`**: Directory containing visualizations (graphs) generated during performance tests.
+
+  * **`performance_vs_text_length.png`**: Graph showing the relationship between text length and execution time.
+  * **`random_vs_same_data.png`**: Graph comparing the performance of the KMP algorithm on random and repetitive strings.
+  * **`time_vs_pattern_length.png`**: Graph showing how pattern length impacts execution time.
+* **`src/`**: The source code directory.
+
+  * **`kmp/algorithm/`**: Contains the core KMP algorithm logic.
+  * **`kmp/exception/`**: Contains `CustomException.java` for custom error handling.
+  * **`kmp/performance/`**: Contains `PerformanceTest.java` for performance testing.
+  * **`kmp/util/`**: Contains utility classes like `StringUtils.java`.
+  * **`kmp/Main.java`**: Entry point for the program.
 
 ---
 
 ## **3. Algorithm Description**
 
-The **Knuth-Morris-Pratt (KMP)** algorithm is a linear time complexity string matching algorithm used for finding all occurrences of a pattern in a text. The algorithm works in two phases:
+The **Knuth-Morris-Pratt (KMP)** algorithm is an efficient string matching algorithm that preprocesses the pattern to create a table (LPS array) that allows the search phase to skip over parts of the text that have already been matched.
 
-1. **Preprocessing Phase**: Computes the **LPS Array** for the given pattern.
-2. **Matching Phase**: Uses the LPS array to skip unnecessary comparisons and efficiently search the pattern in the text.
+### **Steps**:
+
+1. **Preprocessing Phase**: The KMP algorithm computes the **LPS (Longest Prefix Suffix) array** for the pattern.
+2. **Matching Phase**: It uses the LPS array to efficiently search for the pattern in the text, skipping unnecessary comparisons.
 
 The time complexity of the KMP algorithm is **O(n + m)**, where **n** is the length of the text and **m** is the length of the pattern.
 
@@ -67,43 +87,76 @@ The time complexity of the KMP algorithm is **O(n + m)**, where **n** is the len
 
 The algorithm works as follows:
 
-1. **Preprocessing**: The KMP algorithm first computes the **LPS Array** for the given pattern.
-2. **Matching**: Using the precomputed LPS Array, the algorithm searches for all occurrences of the pattern in the text efficiently.
+1. **Preprocessing**: The **LPS array** is computed for the given pattern.
+2. **Matching**: The precomputed LPS array is used to skip unnecessary comparisons during the search phase.
+
+**Process Pipeline**:
+
+```
+JSON input → JsonLoader → DiGraph → Tarjan SCC → Condensation DAG
+→ Kahn Topological Sort → DAG Shortest Path / DAG Longest Path → Results Output
+```
 
 ---
 
 ## **5. Packages**
 
-* **kmp.algorithm** — Contains the core KMP Algorithm logic, including **KMPAlgorithm.java** for searching, **LPS.java** for computing the LPS Array, and **SearchResult.java** for storing and displaying the results.
-* **kmp.performance** — Contains **PerformanceTest.java**, which is used to test the algorithm with different datasets and measure its performance.
-* **kmp.Main** — The entry point of the program that runs the tests and visualizes the results.
+* **`kmp.algorithm`**: Contains the core KMP algorithm logic.
+
+  * `KMPAlgorithm.java`: Main implementation of the KMP algorithm.
+  * `LPS.java`: Computes the LPS array.
+  * `SearchResult.java`: Stores and prints the results.
+* **`kmp.exception`**: Custom exception handling.
+
+  * `CustomException.java`: Used for error handling.
+* **`kmp.performance`**: Contains the performance testing logic.
+
+  * `PerformanceTest.java`: Tests the KMP algorithm's performance on various datasets.
+* **`kmp.util`**: Utility classes.
+
+  * `StringUtils.java`: Helper methods for string manipulation.
+* **`kmp.Main`**: Entry point of the program.
 
 ---
 
 ## **6. Datasets**
 
-The project uses various test strings to analyze the performance of the KMP algorithm. These strings are divided into three categories based on length:
+The project uses nine datasets stored under the `/data` directory. The datasets are divided into three categories based on the graph size:
 
-| Dataset Type | Example Strings          | Length  | Pattern Length | Notes          |
-| ------------ | ------------------------ | ------- | -------------- | -------------- |
-| Small        | "abc", "abcd", "abcabc"  | 3–10    | 3–5            | Small strings  |
-| Medium       | "ababcababcab", "banana" | 10–50   | 3–7            | Mixed patterns |
-| Large        | "a" * 100, "abcabc" * 50 | 100–500 | 10–20          | Large inputs   |
+| Dataset Type | Example Files                               | Nodes | Edges  | Cyclic | SCCs |
+| ------------ | ------------------------------------------- | ----- | ------ | ------ | ---- |
+| Small        | small_1.json, small_2.json, small_3.json    | 6–9   | 8–11   | Some   | 1–2  |
+| Medium       | medium_1.json, medium_2.json, medium_3.json | 12–18 | 20–35  | Yes    | 2–3  |
+| Large        | large_1.json, large_2.json, large_3.json    | 22–40 | 46–120 | Mixed  | 2–5  |
 
-Each string is tested for performance on the KMP algorithm, with varying lengths and pattern sizes.
+Each dataset follows the required format:
+
+```json
+{
+  "directed": true,
+  "n": 8,
+  "edges": [
+    {"u": 0, "v": 1, "w": 3},
+    {"u": 1, "v": 2, "w": 2},
+    {"u": 2, "v": 3, "w": 4}
+  ],
+  "source": 0,
+  "weight_model": "edge"
+}
+```
 
 ---
 
 ## **7. Metrics**
 
-The project includes the following **performance metrics**:
+The project defines performance metrics to track algorithm operations during execution:
 
-| Metric            | Description                          | Used In              |
-| ----------------- | ------------------------------------ | -------------------- |
-| **executionTime** | Time taken for matching process      | KMP Algorithm        |
-| **comparisons**   | Number of character comparisons      | KMP Algorithm        |
-| **patternLength** | Length of the pattern being searched | Performance Analysis |
-| **textLength**    | Length of the text to be searched    | Performance Analysis |
+| Metric          | Description                  | Used In           |
+| --------------- | ---------------------------- | ----------------- |
+| **dfsVisits**   | Number of DFS calls          | Tarjan            |
+| **queueOps**    | Enqueue/dequeue operations   | KahnTopo          |
+| **relaxations** | Edge relaxations             | DAG Shortest Path |
+| **nanos**       | Execution time (nanoseconds) | All modules       |
 
 ---
 
@@ -113,7 +166,7 @@ The project includes the following **performance metrics**:
 
 *(data/performance_vs_text_length.png)*
 
-This graph shows how the KMP algorithm's execution time increases as the length of the text grows. The time complexity of the algorithm is expected to grow linearly with the text size.
+This graph shows how the KMP algorithm's execution time increases as the length of the text grows.
 
 ![Performance vs Text Length](./results/performance_vs_text_length.png)
 
@@ -121,7 +174,7 @@ This graph shows how the KMP algorithm's execution time increases as the length 
 
 *(data/performance_vs_pattern_length.png)*
 
-This graph compares the execution time as the length of the pattern changes. Longer patterns tend to result in longer search times, but the KMP algorithm's efficiency ensures that the time does not grow exponentially.
+This graph compares the execution time as the length of the pattern changes.
 
 ![Performance vs Pattern Length](./results/performance_vs_pattern_length.png)
 
@@ -129,7 +182,7 @@ This graph compares the execution time as the length of the pattern changes. Lon
 
 *(data/random_vs_same_data.png)*
 
-This graph compares the performance of the algorithm when searching through random strings versus strings with repetitive patterns. The results show how the KMP algorithm performs differently based on the structure of the text.
+This graph compares the performance of the algorithm on random strings versus strings with repetitive patterns.
 
 ![Random vs Same Data](./results/random_vs_same_data.png)
 
@@ -139,15 +192,15 @@ This graph compares the performance of the algorithm when searching through rand
 
 ### 1. Build and Package:
 
-To build and package the project, run the following command:
+To build and package the project, use the following Maven command:
 
 ```bash
 mvn clean package
 ```
 
-### 2. Run Default Dataset:
+### 2. Run the Default Dataset:
 
-To run the program with the default dataset, execute:
+To run the program with the default dataset, use:
 
 ```bash
 java -cp target/String-Algorithms-KMP-1.0-SNAPSHOT.jar kmp.Main
@@ -155,25 +208,17 @@ java -cp target/String-Algorithms-KMP-1.0-SNAPSHOT.jar kmp.Main
 
 ### 3. Run Custom Dataset:
 
-You can run the program with a specific dataset by providing the path to the JSON file:
+To run the program with a custom dataset, specify the path to the dataset file:
 
 ```bash
 java -cp target/String-Algorithms-KMP-1.0-SNAPSHOT.jar kmp.Main data/small_1.json
-```
-
-### 4. Run Tests:
-
-To run the tests, use Maven:
-
-```bash
-mvn test
 ```
 
 ---
 
 ## **10. Commands Summary**
 
-For your convenience, here’s a summary of the commands:
+Here is a summary of the commands to work with the project:
 
 ```bash
 git add .
@@ -182,21 +227,18 @@ git push origin main
 
 mvn clean package
 java -cp target/String-Algorithms-KMP-1.0-SNAPSHOT.jar kmp.Main
-mvn test
 ```
 
 ---
 
 ## **11. Conclusion**
 
-The KMP algorithm is implemented correctly and performs efficiently on the provided datasets. The project includes various metrics to measure performance, and several graphs visualize the results. All requirements for the **Bonus Task** have been met, and the project is ready for submission.
+The KMP algorithm is implemented correctly and efficiently processes various datasets. The project includes performance metrics and visualizations to help understand its behavior with different text lengths and pattern sizes. All requirements for the **Bonus Task** have been met, and the project is ready for submission.
 
 ---
 
 ### **Notes**:
 
-* This **README.md** is structured to clearly explain the purpose, data, metrics, figures, and instructions for running the project.
-* It includes all necessary visualizations and ensures the report is complete.
-* Make sure all the graphs and results are included and displayed properly in **README.md** on GitHub.
-
----
+* This **README.md** provides a clear structure for the project, including algorithm description, datasets, metrics, figures, and instructions for running the project.
+* The graphs help visualize the performance analysis of the KMP algorithm.
+* Ensure that all graphs and results are properly displayed in **README.md** on GitHub.
