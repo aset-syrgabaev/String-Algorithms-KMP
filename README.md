@@ -176,7 +176,8 @@ This graph shows how the KMP algorithm's execution time increases as the length 
 
 This graph compares the execution time as the length of the pattern changes.
 
-![Performance vs Pattern Length](./results/performance_vs_pattern_length.png)
+<img width="944" height="674" alt="image" src="https://github.com/user-attachments/assets/69cfc63e-8375-4c08-a2ae-f273e58a0e57" />
+(./results/performance_vs_pattern_length.png)
 
 ### **Graph 3: Random vs Same Data**
 
